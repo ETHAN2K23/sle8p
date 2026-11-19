@@ -67,10 +67,10 @@ export const DynamicIslandLiveActivity: React.FC = () => {
                 </div>
                 <div>
                   <span className="font-disruptive text-sm font-bold text-white block">
-                    Garantía 8h Activa
+                    Monitorización 8.0h
                   </span>
                   <span className="text-[10px] font-mono text-white/50">
-                    Fase: {sleepStatus === "asleep" ? "Sueño Profundo" : "Detectando inicio"}
+                    {sleepStatus === "asleep" ? "Reposo profundo registrado" : "Monitorización de latencia"}
                   </span>
                 </div>
               </div>

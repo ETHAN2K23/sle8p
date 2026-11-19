@@ -331,15 +331,15 @@ export default function WearablesPage() {
         {/* 1. App de Salud (Apple HealthKit) */}
         <div className="bw-card rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-950/60 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-lg">
-              ♥
+            <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center text-white/80 font-mono text-xs font-bold tracking-wider">
+              HK
             </div>
             <div>
               <h4 className="font-disruptive text-sm font-bold text-white">
-                App de Salud (Apple Health)
+                Apple HealthKit
               </h4>
               <p className="text-[11px] text-white/50">
-                Lectura continua de sueño y frecuencia cardíaca
+                Sincronización bidireccional de muestras biométricas
               </p>
             </div>
           </div>
@@ -367,15 +367,15 @@ export default function WearablesPage() {
         {/* 2. Atajo de Alarmas de iOS (Apple Shortcuts) */}
         <div className="bw-card rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-950/60 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold text-sm font-mono">
-              ⚡
+            <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center text-white/80 font-mono text-xs font-bold tracking-wider">
+              SC
             </div>
             <div>
               <h4 className="font-disruptive text-sm font-bold text-white">
-                Atajo de Alarmas (Siri Shortcuts)
+                Siri Shortcuts
               </h4>
               <p className="text-[11px] text-white/50">
-                Sincroniza la alarma calculada con el Reloj de iOS
+                Programación directa de la alarma en la app Reloj de iOS
               </p>
             </div>
           </div>

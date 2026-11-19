@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Sle8pMascot } from "@/components/Sle8pMascot";
-import { Sle8pBlinkingLogo } from "@/components/Sle8pBlinkingLogo";
 import { useSleepStore } from "@/lib/sleepStore";
 import { hapticMedium, hapticLight } from "@/lib/haptics";
 
@@ -15,15 +14,15 @@ export default function CoachPage() {
   const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string }[]>([
     {
       role: "ai",
-      text: "¡Ey! Soy Sle8p. Mi única misión en esta vida es que hoy cumplas tus 8 horas. Tu hora mágica para irte a la cueva son las " + idealBedtime + ". ¿Cómo sientes tu cuerpo hoy?",
+      text: `Asistente fisiológico de descanso. Análisis de ritmo circadiano y arquitectura ultradiana activo. Para abrir los ojos a las ${wakeUpTime} con tus 8.0 horas cubiertas, la hora prevista de descanso se sitúa a las ${idealBedtime}.`,
     },
   ]);
 
   const quickPrompts = [
-    "☕ ¿Puedo tomar café ahora?",
-    "🛌 ¿A qué hora a la cama?",
-    "👀 Me desperté a medianoche",
-    "🧠 ¿Por qué 5 fases REM?",
+    "Límite de cafeína según semivida",
+    "Ventana de inicio de sueño",
+    "Manejo de despertares nocturnos",
+    "Arquitectura de fases REM",
   ];
 
   const scrollToBottom = () => {
@@ -42,22 +41,37 @@ export default function CoachPage() {
     setIsTyping(true);
 
     setTimeout(() => {
-      let reply = "Si quieres dormir como un lirón esta noche, suelta pantallas 45 minutos antes de tus " + idealBedtime + ". A las " + wakeUpTime + " te despertarás con la mente afilada.";
-      
+      let reply = `Para sincronizar tu despertar a las ${wakeUpTime} con una latencia fisiológica normal, apaga pantallas 45 minutos antes de las ${idealBedtime}.`;
+
       const lower = queryText.toLowerCase();
       if (lower.includes("cafe") || lower.includes("café")) {
-        reply = "¡Cuidado con la cafeína! Tiene 6 horas de vida media. Si te tomas uno ahora, a las " + idealBedtime + " tus receptores de adenosina van a estar hiperactivos. Mejor agua fresca o infusión sin teína.";
-      } else if (lower.includes("medianoche") || lower.includes("desperté") || lower.includes("desperte") || lower.includes("desvelo")) {
-        reply = "Cero agobios. Despertarse entre ciclos REM es normal en la biología humana. La regla de oro: no mires la pantalla, no enciendas luces y respira 4-7-8 en la oscuridad. Tu cuerpo volverá al sueño profundo.";
-      } else if (lower.includes("rem") || lower.includes("fases") || lower.includes("ciclos")) {
-        reply = "Las fases REM más largas ocurren en las últimas 3 horas de sueño. Con tus " + targetHours + " horas aseguras 5 ciclos completos, que es justo donde tu cerebro procesa emociones y consolida memoria.";
-      } else if (lower.includes("hora") || lower.includes("cama") || lower.includes("acuesto") || lower.includes("dormir")) {
-        reply = "Para abrir los ojos a las " + wakeUpTime + " con tus " + targetHours + " horas completadas, tu hora sagrada de acostarte son las " + idealBedtime + ". ¡Póntelo en el calendario!";
+        reply = `La semivida de la cafeína en adultos sanos oscila entre 5 y 7 horas, bloqueando competitivamente los receptores de adenosina en el prosencéfalo basal. Para proteger el sueño profundo antes de las ${idealBedtime}, se aconseja cesar el consumo 10 horas antes.`;
+      } else if (
+        lower.includes("medianoche") ||
+        lower.includes("desperté") ||
+        lower.includes("desperte") ||
+        lower.includes("desvelo")
+      ) {
+        reply =
+          "Los microdespertares al finalizar cada ciclo ultradiano de 90 minutos forman parte de la arquitectura fisiológica normal. Mantén la estancia en oscuridad absoluta, evita activar la pantalla del teléfono y realiza respiraciones diafragmáticas lentas para mantener la activación parasimpática.";
+      } else if (
+        lower.includes("rem") ||
+        lower.includes("fases") ||
+        lower.includes("ciclos")
+      ) {
+        reply = `Las fases REM de mayor densidad neurofisiológica ocurren durante las últimas 3 horas del descanso. Una duración de ${targetHours} horas asegura entre 5 y 6 ciclos ultradianos completos, optimizando la consolidación sináptica y la regulación emocional.`;
+      } else if (
+        lower.includes("hora") ||
+        lower.includes("cama") ||
+        lower.includes("acuesto") ||
+        lower.includes("dormir")
+      ) {
+        reply = `Para despertar a las ${wakeUpTime} con ${targetHours} horas efectivas y un intervalo de latencia de 15 minutos, el inicio del descanso debe programarse para las ${idealBedtime}.`;
       }
 
       setIsTyping(false);
       setMessages((prev) => [...prev, { role: "ai", text: reply }]);
-    }, 450);
+    }, 400);
   };
 
   const handleSend = (e: React.FormEvent) => {
@@ -75,7 +89,7 @@ export default function CoachPage() {
 
   return (
     <div className="px-5 pt-safe space-y-3 bg-black text-white min-h-screen flex flex-col justify-between pb-28">
-      {/* Header Limpio */}
+      {/* Encabezado */}
       <header className="pt-2 pb-1 border-b border-white/10 flex items-center justify-between">
         <div>
           <h1 className="font-disruptive text-2xl font-black text-white">
@@ -95,7 +109,7 @@ export default function CoachPage() {
         <Sle8pMascot size={115} autoBlink={true} showSpeech={false} />
       </div>
 
-      {/* Messages Thread */}
+      {/* Hilo de Mensajes */}
       <div className="flex-1 space-y-2 overflow-y-auto max-h-[260px] pr-1 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {messages.map((m, idx) => (
           <div
@@ -105,8 +119,8 @@ export default function CoachPage() {
             <div
               className={`max-w-[85%] rounded-3xl px-4 py-3 text-xs leading-relaxed ${
                 m.role === "user"
-                  ? "bg-white text-black font-semibold shadow-md"
-                  : "bg-neutral-900/90 text-white border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+                  ? "bg-white text-black font-semibold shadow-sm"
+                  : "bg-neutral-900 border border-white/15 text-white/90"
               }`}
             >
               {m.text}
@@ -114,49 +128,51 @@ export default function CoachPage() {
           </div>
         ))}
 
-        {/* Typing indicator */}
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-neutral-900/90 border border-white/10 rounded-2xl px-4 py-2 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-bounce" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-bounce [animation-delay:0.15s]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-bounce [animation-delay:0.3s]" />
+            <div className="bg-neutral-900 border border-white/10 rounded-2xl px-4 py-2.5 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-pulse" />
+              <span className="text-[11px] font-mono text-white/60">
+                Analizando parámetros fisiológicos...
+              </span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Quick Prompts Carousel without scrollbar & with Squash */}
-      <div className="flex gap-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {quickPrompts.map((p, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleQuickPrompt(p)}
-            className="flex-shrink-0 px-3.5 h-10 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-white/15 text-[11px] font-semibold text-white/90 squash-btn whitespace-nowrap flex items-center justify-center"
-          >
-            {p}
-          </button>
-        ))}
-      </div>
+      {/* Carrusel de Consultas Rápidas (Sin Emojis) */}
+      <div className="pt-2">
+        <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {quickPrompts.map((p, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleQuickPrompt(p)}
+              className="whitespace-nowrap px-3.5 h-8 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-[11px] font-mono text-white/80 active:scale-95 transition-all shrink-0"
+            >
+              {p}
+            </button>
+          ))}
+        </div>
 
-      {/* Input Bar with Squash Button */}
-      <form onSubmit={handleSend} className="pt-1 flex gap-2">
-        <input
-          type="text"
-          value={userQuery}
-          onChange={(e) => setUserQuery(e.target.value)}
-          placeholder="Pregúntale a Sle8p sobre tu descanso..."
-          className="flex-1 bg-neutral-900 border border-white/20 rounded-2xl px-4 h-12 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-white transition-colors"
-        />
-        <button
-          type="submit"
-          disabled={isTyping}
-          className="px-5 h-12 rounded-2xl bg-white text-black font-bold text-xs hover:bg-neutral-200 squash-btn shadow-[0_2px_15px_rgba(255,255,255,0.2)] disabled:opacity-50 flex items-center justify-center"
-        >
-          Preguntar
-        </button>
-      </form>
+        {/* Input de Consulta */}
+        <form onSubmit={handleSend} className="relative mt-2">
+          <input
+            type="text"
+            value={userQuery}
+            onChange={(e) => setUserQuery(e.target.value)}
+            placeholder="Consulta parámetros de descanso o ritmos circadianos..."
+            className="w-full h-12 bg-neutral-900 border border-white/15 rounded-2xl px-4 pr-12 text-xs text-white placeholder-white/40 focus:outline-none focus:border-white/40 transition-colors"
+          />
+          <button
+            type="submit"
+            disabled={!userQuery.trim()}
+            className="absolute right-2 top-2 w-8 h-8 rounded-xl bg-white text-black font-bold flex items-center justify-center hover:bg-neutral-200 transition-colors disabled:opacity-30 disabled:hover:bg-white"
+          >
+            →
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -119,7 +119,7 @@ export default function TrackerPage() {
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-orange-400 font-bold font-mono text-[11px]">
-                💡 Recomendado: Conectar dispositivo wearable
+                Medición directa por hardware recomendada
               </span>
               <Link
                 href="/wearables"
@@ -129,7 +129,7 @@ export default function TrackerPage() {
               </Link>
             </div>
             <p className="text-[11px] text-white/60">
-              Sin reloj/anillo activo, Sle8p calcula tus fases REM con la estimación estándar de la National Sleep Foundation (22% del tiempo total en ciclos ultradianos de 90m).
+              Sin sensor wearable activo, Sle8p aplica el modelo ultradiano de la National Sleep Foundation (ciclos de 90 minutos y 22% de fase REM promedio).
             </p>
           </div>
         )}
@@ -248,7 +248,7 @@ export default function TrackerPage() {
       {/* SECCIÓN DE CONSEJOS CIENTÍFICOS SEGÚN CALIDAD DE SUEÑO */}
       <section className="space-y-3">
         <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white/50 px-1">
-          Consejos Clínicos por Nivel de Sueño
+          Directrices Clínicas por Rango de Descanso
         </h3>
 
         {/* 1. Mal Sueño (< 7h o score < 70) */}
@@ -261,17 +261,17 @@ export default function TrackerPage() {
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono font-bold text-[#FF3333] uppercase">
-              Para Mal Sueño (&lt; 7h / Déficit)
+              Déficit de descanso (&lt; 7.0h)
             </span>
             {selectedData.category === "malo" && (
-              <span className="text-[9px] font-mono text-[#FF3333] font-bold">Tu estado en esta noche</span>
+              <span className="text-[9px] font-mono text-[#FF3333] font-bold">Registro de esta noche</span>
             )}
           </div>
           <h4 className="font-disruptive text-sm font-bold text-white">
-            Regla de Rescate Circadiano 10-3-2-1
+            Protocolo de Intervención Circadiana
           </h4>
           <p className="text-xs text-white/70 leading-relaxed">
-            Corta la cafeína 10h antes de acostarte (la vida media de la cafeína es de 6h). Cena ligero 3h antes para que la digestión no eleve la temperatura interna y desconecta pantallas 1h antes para permitir la segregación de melatonina.
+            Suspender consumo de cafeína 10 horas antes del descanso para permitir la metabolización hepática. Evitar comidas copiosas 3 horas antes para impedir la elevación de la temperatura central y reducir pantallas 60 minutos antes para facilitar la secreción de melatonina endógena.
           </p>
         </div>
 
@@ -285,17 +285,17 @@ export default function TrackerPage() {
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono font-bold text-[#FF7700] uppercase">
-              Para Sueño Normal (7h a 8h / Regular)
+              Rango Fisiológico Estándar (7.0h - 8.0h)
             </span>
             {selectedData.category === "normal" && (
-              <span className="text-[9px] font-mono text-[#FF7700] font-bold">Tu estado en esta noche</span>
+              <span className="text-[9px] font-mono text-[#FF7700] font-bold">Registro de esta noche</span>
             )}
           </div>
           <h4 className="font-disruptive text-sm font-bold text-white">
-            Optimización de Fase REM y Termorregulación
+            Termorregulación y Densidad REM
           </h4>
           <p className="text-xs text-white/70 leading-relaxed">
-            Mantén la habitación entre 18°C y 19°C. El cuerpo necesita bajar 1°C su temperatura central para activar el sueño profundo y alargar el tiempo en fase REM durante la segunda mitad de la noche.
+            Mantener la temperatura del dormitorio entre 18°C y 19°C. El descenso de 1°C en la temperatura central facilita la transición al sueño profundo y maximiza la duración de los episodios REM en la segunda mitad del ciclo.
           </p>
         </div>
 
@@ -309,17 +309,17 @@ export default function TrackerPage() {
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono font-bold text-[#00FF66] uppercase">
-              Para Buen Sueño (&ge; 8h / Óptimo)
+              Consolidación Circadiana Óptima (&ge; 8.0h)
             </span>
             {selectedData.category === "bueno" && (
-              <span className="text-[9px] font-mono text-[#00FF66] font-bold">Tu estado en esta noche</span>
+              <span className="text-[9px] font-mono text-[#00FF66] font-bold">Registro de esta noche</span>
             )}
           </div>
           <h4 className="font-disruptive text-sm font-bold text-white">
-            Consolidación y Anclaje Circadiano
+            Sincronización del Núcleo Supraquiasmático
           </h4>
           <p className="text-xs text-white/70 leading-relaxed">
-            Tus 5-6 fases REM están completas. Para blindar este ritmo, exponte 15 minutos a luz natural sin gafas de sol en la primera hora tras levantarte: esto fija el pulso de cortisol y asegura que la adenosina suba puntual dentro de 16 horas.
+            Ciclos REM completados íntegramente. Para fijar este ritmo, exponerse a luz natural directa durante 15 minutos en la primera hora tras el despertar: este estímulo fotobiótico sincroniza el cortisol y programa la curva de adenosina para la siguiente ventana nocturna.
           </p>
         </div>
       </section>

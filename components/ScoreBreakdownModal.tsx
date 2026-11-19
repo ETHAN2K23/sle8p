@@ -100,7 +100,7 @@ export const ScoreBreakdownModal: React.FC<ScoreBreakdownModalProps> = ({
                   Latencia de inicio
                 </span>
                 <span className="text-[11px] font-mono text-white/50">
-                  14 min hasta dormirte
+                  14 min (Rango fisiológico)
                 </span>
               </div>
               <span className="font-disruptive text-lg font-bold text-[#00FF66]">
@@ -112,10 +112,10 @@ export const ScoreBreakdownModal: React.FC<ScoreBreakdownModalProps> = ({
             <div className="bg-black/70 border border-white/10 rounded-2xl p-3.5 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-white block">
-                  Arquitectura REM y Profundo
+                  Arquitectura REM y Sueño Profundo
                 </span>
                 <span className="text-[11px] font-mono text-white/50">
-                  5 ciclos de 90 min
+                  5 ciclos ultradianos (22% REM)
                 </span>
               </div>
               <span className="font-disruptive text-lg font-bold text-[#FF7700]">
@@ -124,15 +124,15 @@ export const ScoreBreakdownModal: React.FC<ScoreBreakdownModalProps> = ({
             </div>
           </div>
 
-          {/* Action Close with Squash and Stretch (Principle 1) */}
+          {/* Action Close */}
           <button
             onClick={() => {
               hapticLight();
               onClose();
             }}
-            className="w-full py-4 rounded-2xl bg-white text-black font-disruptive text-sm font-black squash-btn shadow-md"
+            className="w-full py-3.5 rounded-2xl bg-white text-black font-disruptive text-sm font-black squash-btn shadow-md"
           >
-            Entendido
+            Cerrar
           </button>
         </motion.div>
       </div>
