@@ -75,18 +75,24 @@ export default function CoachPage() {
 
   return (
     <div className="px-5 pt-safe space-y-3 bg-black text-white min-h-screen flex flex-col justify-between pb-28">
-      {/* Header with Blinking Logo */}
-      <header className="pt-2 flex items-center justify-between">
-        <Sle8pBlinkingLogo width={95} height={38} />
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 border border-white/10 text-xs font-mono">
-          <span className="w-2 h-2 rounded-full bg-[#00FF66] shadow-[0_0_8px_#00FF66] animate-pulse" />
-          <span className="text-white/80">Sle8p Activo</span>
+      {/* Header Limpio */}
+      <header className="pt-2 pb-1 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <h1 className="font-disruptive text-2xl font-black text-white">
+            Sle8p IA
+          </h1>
+          <p className="text-xs text-white/50">
+            Neurociencia y ritmos circadianos
+          </p>
         </div>
+        <span className="text-[10px] font-mono text-[#00FF66] font-bold">
+          En línea
+        </span>
       </header>
 
-      {/* Central Blinking Mascot */}
-      <div className="py-1 flex flex-col items-center justify-center">
-        <Sle8pMascot size={130} autoBlink={true} showSpeech={false} />
+      {/* Mascota Oficial Sle8p */}
+      <div className="py-2 flex flex-col items-center justify-center">
+        <Sle8pMascot size={115} autoBlink={true} showSpeech={false} />
       </div>
 
       {/* Messages Thread */}

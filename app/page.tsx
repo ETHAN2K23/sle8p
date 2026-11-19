@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Sle8pMascot } from "@/components/Sle8pMascot";
-import { Sle8pBlinkingLogo } from "@/components/Sle8pBlinkingLogo";
 import { SleepCircleProgress } from "@/components/SleepCircleProgress";
 import { ScoreBreakdownModal } from "@/components/ScoreBreakdownModal";
 import { DynamicIslandLiveActivity } from "@/components/DynamicIslandLiveActivity";
@@ -11,26 +10,34 @@ import { useSleepStore } from "@/lib/sleepStore";
 import { hapticSuccess, hapticMedium, hapticLight } from "@/lib/haptics";
 import { toast } from "sonner";
 
+const QUICK_BEDTIMES = ["22:30", "23:00", "23:15", "23:30", "00:00"];
+
 export default function HomePage() {
   const {
     sleepStatus,
     todayScore,
     accumulatedHours,
-    weeklyProgress,
     targetHours,
     wakeUpTime,
-    idealBedtime,
+    todayPlannedBedtime,
+    reminderTime,
+    isBedtimeReminderEnabled,
+    isSleepFocusEnabled,
+    setTodayPlannedBedtime,
+    toggleBedtimeReminder,
+    toggleSleepFocus,
     startNightTracking,
     stopNightTracking,
     simulateSleepDetected,
   } = useSleepStore();
 
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
+  const [isCustomTimeOpen, setIsCustomTimeOpen] = useState(false);
 
   const handleStartNight = () => {
     hapticSuccess();
     startNightTracking();
-    toast.success("¡A dormir! Sle8p vigila tu descanso.");
+    toast.success("¡A dormir! Sle8p vigila tu descanso y tus 8h.");
   };
 
   const handleSimulateSleep = () => {
@@ -42,7 +49,7 @@ export default function HomePage() {
   const handleStopNight = () => {
     hapticSuccess();
     stopNightTracking();
-    toast.success("¡Buenos días! 8 horas de energía listas.");
+    toast.success("¡Buenos días! 8 horas completadas en fase ligera.");
   };
 
   const handleCancelNight = () => {
@@ -50,67 +57,168 @@ export default function HomePage() {
     stopNightTracking();
   };
 
+  const handleSelectBedtime = (time: string) => {
+    hapticLight();
+    setTodayPlannedBedtime(time);
+    toast.success(`Hora fijada a las ${time}. Alarma: ${wakeUpTime}`);
+  };
+
   return (
     <div className="px-5 pt-safe space-y-4 bg-black text-white min-h-screen pb-28">
-      {/* Top Header - Blinking Sle8p Brand Logo */}
-      <header className="flex items-center justify-between pt-2">
-        <Link href="/onboarding" className="flex items-center group">
-          <Sle8pBlinkingLogo width={105} height={42} />
-        </Link>
-
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 border border-white/10 text-xs font-mono font-semibold text-white/80">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] shadow-[0_0_8px_#00FF66]" />
-          Modo Noche
+      {/* Header ultra-limpio sin logo mal ejecutado ni pills decorativas */}
+      <header className="flex items-center justify-between pt-2 pb-1 border-b border-white/10">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-white/50">
+            HOY · 19 NOVIEMBRE
+          </span>
         </div>
+
+        <Link
+          href="/profile"
+          className="text-xs font-mono text-white/60 hover:text-white transition-colors"
+        >
+          {todayPlannedBedtime} → {wakeUpTime}
+        </Link>
       </header>
 
-      {/* Dynamic Island / Live Activity Simulation on Active Tracking */}
+      {/* Dynamic Island / Live Activity durante el descanso */}
       {(sleepStatus === "detecting" || sleepStatus === "asleep") && (
         <DynamicIslandLiveActivity />
       )}
 
-      {/* Hero Circular Progress & Sle8p Living Mascot */}
-      <section className="relative flex flex-col items-center justify-center py-1">
-        <SleepCircleProgress
-          score={todayScore}
-          hours={accumulatedHours}
-          targetHours={targetHours}
-          weeklyProgress={weeklyProgress}
-          size={255}
-          onClick={() => setIsScoreModalOpen(true)}
-        />
+      {/* Hero Section: Barra de Progreso Gorda al lado de la Mascota Sle8p */}
+      <section className="bw-card rounded-3xl p-4 flex items-center justify-between gap-3">
+        {/* Lado Izquierdo: Barra Gorda Única (92 cabe holgadamente) */}
+        <div className="shrink-0">
+          <SleepCircleProgress
+            score={todayScore}
+            hours={accumulatedHours}
+            targetHours={targetHours}
+            size={168}
+            strokeWidth={18}
+            onClick={() => setIsScoreModalOpen(true)}
+          />
+        </div>
 
-        <div className="mt-2 w-full">
-          <Sle8pMascot status={sleepStatus} size={145} autoBlink={true} showSpeech={true} />
+        {/* Lado Derecho: Mascota Oficial con ojos abiertos y diálogo vivo */}
+        <div className="flex-1 flex flex-col items-center justify-center pl-1">
+          <Sle8pMascot
+            status={sleepStatus}
+            size={110}
+            autoBlink={true}
+            showSpeech={true}
+            compactSpeech={true}
+          />
         </div>
       </section>
 
-      {/* Bedtime Destination Card with Personality */}
-      <section className="bw-card rounded-3xl p-5 space-y-2">
+      {/* Planificador Diario: ¿A qué hora te vas a dormir hoy? */}
+      <section className="bw-card rounded-3xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-[11px] text-white/50 block uppercase tracking-wider font-mono">
-            Tu cita con la almohada
+            ¿A qué hora te duermes hoy?
           </span>
           <span className="text-[10px] text-[#00FF66] font-mono font-bold">
             Garantía 8h
           </span>
         </div>
 
+        {/* Hora planeada e indicadores calculados */}
         <div className="flex items-baseline justify-between">
           <div className="font-disruptive text-5xl font-black text-white tracking-tight">
-            {idealBedtime}
+            {todayPlannedBedtime}
           </div>
-          <span className="text-xs text-white/80 font-mono">
-            Meta: <span className="text-[#00FF66] font-bold">{targetHours}h</span> ({Math.floor((targetHours * 60) / 90)} fases REM)
-          </span>
+          <div className="text-right">
+            <span className="text-xs text-white/80 font-mono block">
+              Despertador: <span className="text-[#00FF66] font-bold">{wakeUpTime}</span>
+            </span>
+            <span className="text-[10px] text-white/50 font-mono">
+              5 fases REM óptimas
+            </span>
+          </div>
         </div>
 
-        <p className="text-xs text-white/70 leading-relaxed pt-1.5 border-t border-white/10">
-          Para abrir los ojos a las {wakeUpTime} como nuevo, métete a la cueva a las {idealBedtime}.
-        </p>
+        {/* Selector rápido interactivo de horas de acostarse */}
+        <div className="flex items-center justify-between gap-1.5 pt-1">
+          {QUICK_BEDTIMES.map((time) => {
+            const isSelected = todayPlannedBedtime === time;
+            return (
+              <button
+                key={time}
+                onClick={() => handleSelectBedtime(time)}
+                className={`flex-1 h-9 rounded-xl text-xs font-mono font-bold transition-all active:scale-95 ${
+                  isSelected
+                    ? "bg-white text-black shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+                    : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {time}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Notificación automática 30 min antes y Descanso Programado iPhone */}
+        <div className="pt-2 border-t border-white/10 space-y-2">
+          {/* Recordatorio 30 minutos antes */}
+          <div
+            onClick={() => {
+              hapticLight();
+              toggleBedtimeReminder();
+              toast(
+                isBedtimeReminderEnabled
+                  ? "Recordatorio desactivado"
+                  : `Recordatorio automático a las ${reminderTime} (30 min antes)`
+              );
+            }}
+            className="flex items-center justify-between text-xs cursor-pointer select-none py-1 group"
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isBedtimeReminderEnabled ? "bg-[#00FF66]" : "bg-white/20"
+                }`}
+              />
+              <span className="text-white/80 group-hover:text-white transition-colors">
+                Notificación 30 min antes ({reminderTime})
+              </span>
+            </div>
+            <span className="font-mono text-[11px] text-white/50">
+              {isBedtimeReminderEnabled ? "Activada" : "Pausa"}
+            </span>
+          </div>
+
+          {/* Descanso Programado iPhone (Modo Concentración Sueño) */}
+          <div
+            onClick={() => {
+              hapticLight();
+              toggleSleepFocus();
+              toast(
+                isSleepFocusEnabled
+                  ? "Modo Descanso iPhone desactivado"
+                  : "Modo Descanso iPhone programado para las " + reminderTime
+              );
+            }}
+            className="flex items-center justify-between text-xs cursor-pointer select-none py-1 group"
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isSleepFocusEnabled ? "bg-[#00FF66]" : "bg-white/20"
+                }`}
+              />
+              <span className="text-white/80 group-hover:text-white transition-colors">
+                Descanso Programado iPhone
+              </span>
+            </div>
+            <span className="font-mono text-[11px] text-[#00FF66]">
+              {isSleepFocusEnabled ? "Auto" : "Off"}
+            </span>
+          </div>
+        </div>
       </section>
 
-      {/* Sleep Night Action Button with UX Motion Squash & Stretch */}
+      {/* Botón de Acción Principal con Squash & Stretch */}
       <section className="w-full">
         {sleepStatus === "idle" && (
           <button
@@ -153,7 +261,7 @@ export default function HomePage() {
                 <span className="w-2 h-2 rounded-full bg-[#00FF66] shadow-[0_0_8px_#00FF66]" />
                 Sueño blindado · 8h en curso
               </span>
-              <span>Despertar en fase ligera ({wakeUpTime})</span>
+              <span>Alarma ligera ({wakeUpTime})</span>
             </div>
             <button
               onClick={handleStopNight}
@@ -165,7 +273,7 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Metrics Row - Touch Targets >= 44pt */}
+      {/* Métricas Táctiles */}
       <section className="grid grid-cols-3 gap-2 text-center">
         <div
           onClick={() => {
@@ -174,9 +282,15 @@ export default function HomePage() {
           }}
           className="bw-card rounded-2xl p-3 cursor-pointer hover:border-white/25 squash-btn"
         >
-          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">Latencia</span>
-          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">14m</span>
-          <span className="text-[9px] text-[#00FF66] font-mono font-semibold">Como un lirón</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">
+            Latencia
+          </span>
+          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">
+            14m
+          </span>
+          <span className="text-[9px] text-[#00FF66] font-mono font-semibold">
+            Óptima
+          </span>
         </div>
 
         <div
@@ -186,9 +300,15 @@ export default function HomePage() {
           }}
           className="bw-card rounded-2xl p-3 cursor-pointer hover:border-white/25 squash-btn"
         >
-          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">Fases REM</span>
-          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">5</span>
-          <span className="text-[9px] text-[#FF7700] font-mono font-semibold">Mente limpia</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">
+            Fases REM
+          </span>
+          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">
+            5
+          </span>
+          <span className="text-[9px] text-[#FF7700] font-mono font-semibold">
+            Completas
+          </span>
         </div>
 
         <div
@@ -198,9 +318,15 @@ export default function HomePage() {
           }}
           className="bw-card rounded-2xl p-3 cursor-pointer hover:border-white/25 squash-btn"
         >
-          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">Eficiencia</span>
-          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">94%</span>
-          <span className="text-[9px] text-[#00FF66] font-mono font-semibold">Modo bestia</span>
+          <span className="text-[10px] text-white/40 uppercase tracking-wider block font-mono">
+            Eficiencia
+          </span>
+          <span className="font-disruptive text-xl font-bold text-white mt-0.5 block">
+            94%
+          </span>
+          <span className="text-[9px] text-[#00FF66] font-mono font-semibold">
+            Modo bestia
+          </span>
         </div>
       </section>
 

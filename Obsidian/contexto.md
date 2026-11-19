@@ -285,3 +285,40 @@ Para la sincronización con los diferentes dispositivos de seguimiento de salud:
 4. **Compatibilidad y Sincronización:**
    - `lib/supabase.ts`: Conectado directamente a `utils/supabase/client.ts` para sincronización de perfiles y telemetría de wearables.
    - Repositorio GitHub sincronizado en `https://github.com/ETHAN2K23/sle8p.git` listo para Vercel.
+
+
+---
+
+## 17. Evolución UX & Arquitectura Científica: Rediseño Integral Sle8p
+
+1. **Dashboard & Barra de Progreso Gorda:**
+   - Erradicación definitiva de barras dobles concéntricas: se implementa una **única barra de progreso circular continua y gorda** (`strokeWidth: 18px`), dejando holgura total para valores altos como 92 o 100 sin colisión tipográfica.
+   - Disposición **Side-by-Side (Hero Horizontal)**: La barra circular se sitúa en un flanco y la **Mascota Oficial Sle8p** (ojos abiertos de Ethan sin dos 'o's falsas) se posiciona a su lado en diálogo cómplice e interactivo.
+   - Eliminación del logo superior izquierdo y de la pill `[• Modo Noche]`, dando paso a un encabezado minimalista con fecha y rango de descanso.
+
+2. **Navbar Rediseñado (Apple HIG Puro):**
+   - Supresión total de la pastilla flotante blanca superior sobre los iconos activos.
+   - Icono 1 (Home `/`): **Casa 100% rellena**.
+   - Icono 3 (IA `/coach`): **Logo oficial de Sle8p** (ojos reales abiertos en transparencia nítida).
+   - Estado activo con `scale-110`, blanco puro y resplandor sutil; inactivos al 40% de opacidad.
+
+3. **Gestión de Wearables e Integraciones iOS:**
+   - **Dispositivo Conectado Exclusivo:** La vista muestra únicamente el dispositivo emparejado en formato de tarjeta de hardware (ej. Apple Watch Ultra 2 con pulso en vivo a 52 BPM, batería 86% y VFC), sin clutter de otros 5 dispositivos.
+   - **Estado Desconectado:** Si no hay dispositivo emparejado, se activa un carrusel dinámico giratorio 3D con indicador de puntos y botón "+ Añadir Dispositivo".
+   - **Integraciones Nativas:** Conectores directos para **Apple Salud (HealthKit)** y **Atajo de Alarmas (Siri Shortcuts)** para saltar el sandbox de iOS y programar el Reloj nativo.
+
+4. **Planificador Diario de Acostarse & Notificaciones:**
+   - Tarjeta interactiva diaria: "¿A qué hora te duermes hoy?" con chips rápidos (`22:30`, `23:00`, `23:15`, `23:30`, `00:00`).
+   - Cálculo automático de hora de despertar garantizada (8h) y fases REM (5 fases).
+   - Programación de **notificación automática 30 minutos antes** de la hora de acostarse (ej. 22:45 para ir a la cama a las 23:15).
+   - Integración de **Descanso Programado iPhone** (Enfoque de Sueño de iOS).
+
+5. **Tracker Unificado, Percentiles y Consejos Clínicos:**
+   - Eliminación de la separación Semana vs Mes: gráfica combinada unificada con la media móvil del usuario (`Media: 7.9h`) y barras coloreadas con Verde chillón (`#00FF66`), Naranja (`#FF7700`) y Rojo (`#FF3333`).
+   - Visualización de las fases REM logradas por noche (ej. 5 fases / 104 min).
+   - **Benchmark Poblacional Científico:** Comparativa real basada en la National Sleep Foundation / CDC ("Tu descanso es superior al del 82% de los adultos").
+   - **Consejos Clínicos Contextuales:**
+     - *Mal sueño (< 7h)*: Regla de rescate circadiano 10-3-2-1 (corte de cafeína 10h antes, cena ligera 3h antes, apagado de pantallas 1h antes).
+     - *Sueño normal (7-8h)*: Termorregulación a 18-19°C para potenciar la segunda mitad de la noche.
+     - *Buen sueño (&ge; 8h)*: Exposición a 15m de luz solar matutina para fijar el pulso de cortisol.
+   - **Estimación REM Sin Dispositivos:** Estimador de ciclos ultradianos (90m por ciclo, 22% REM total) basado en las medias biológicas contrastadas en internet cuando el usuario no dispone de smartwatch.

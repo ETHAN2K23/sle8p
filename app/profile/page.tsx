@@ -11,9 +11,16 @@ export default function ProfilePage() {
   return (
     <div className="px-5 pt-safe space-y-4 bg-black text-white min-h-screen pb-28">
       {/* Header */}
-      <header className="pt-2 flex items-center justify-between">
-        <Sle8pBlinkingLogo width={95} height={38} />
-        <span className="text-xs font-mono text-white/50">Ajustes</span>
+      <header className="pt-2 pb-1 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <h1 className="font-disruptive text-2xl font-black text-white">
+            Perfil
+          </h1>
+          <p className="text-xs text-white/50">
+            Ajustes y sincronización de cuenta
+          </p>
+        </div>
+        <span className="text-xs font-mono text-white/50">Sle8p Pro</span>
       </header>
 
       {/* User Info Card */}

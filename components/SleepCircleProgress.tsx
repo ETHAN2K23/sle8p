@@ -8,8 +8,8 @@ interface SleepCircleProgressProps {
   score: number; // 0 to 100
   hours: number; // e.g. 7.8
   targetHours?: number; // default 8.0
-  weeklyProgress: number; // 0 to 100%
   size?: number;
+  strokeWidth?: number;
   onClick?: () => void;
 }
 
@@ -17,30 +17,24 @@ export const SleepCircleProgress: React.FC<SleepCircleProgressProps> = ({
   score,
   hours,
   targetHours = 8.0,
-  weeklyProgress,
-  size = 260,
+  size = 180,
+  strokeWidth = 18,
   onClick,
 }) => {
-  const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  const dailyProgressRatio = Math.min(hours / targetHours, 1.25);
-  const strokeDashoffset = circumference - (dailyProgressRatio * circumference);
-
-  const innerRadius = radius - 16;
-  const innerCircumference = 2 * Math.PI * innerRadius;
-  const innerStrokeDashoffset =
-    innerCircumference - (Math.min(weeklyProgress, 100) / 100) * innerCircumference;
+  const progressRatio = Math.min(hours / targetHours, 1.25);
+  const strokeDashoffset = circumference - progressRatio * circumference;
 
   const hoursInt = Math.floor(hours);
   const minutes = Math.round((hours - hoursInt) * 60);
 
-  // Dynamic Highlight Colors (Verde chillón, Naranja, Rojo)
+  // Dynamic Highlight Colors: Verde chillón (#00FF66), Naranja (#FF7700), Rojo (#FF3333)
   const getHighlightColor = () => {
-    if (score >= 85 || hours >= targetHours) return "#00FF66"; // Verde chillón
-    if (score >= 70 || hours >= targetHours * 0.8) return "#FF7700"; // Naranja
-    return "#FF3333"; // Rojo
+    if (score >= 85 || hours >= targetHours) return "#00FF66";
+    if (score >= 70 || hours >= targetHours * 0.8) return "#FF7700";
+    return "#FF3333";
   };
 
   const highlightColor = getHighlightColor();
@@ -53,12 +47,13 @@ export const SleepCircleProgress: React.FC<SleepCircleProgressProps> = ({
   return (
     <div
       onClick={handleClick}
-      className="relative flex flex-col items-center justify-center select-none cursor-pointer group active:scale-[0.98] transition-transform"
+      className="relative flex flex-col items-center justify-center select-none cursor-pointer group active:scale-[0.97] transition-transform"
+      style={{ width: size, height: size }}
     >
       <svg width={size} height={size} className="transform -rotate-90">
         <defs>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="progressGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -66,7 +61,7 @@ export const SleepCircleProgress: React.FC<SleepCircleProgressProps> = ({
           </filter>
         </defs>
 
-        {/* Outer Track - Dark subtle gray */}
+        {/* Única Pista de Fondo - Gris oscuro sutil */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -76,7 +71,7 @@ export const SleepCircleProgress: React.FC<SleepCircleProgressProps> = ({
           fill="transparent"
         />
 
-        {/* Outer Ring - Dynamic Highlight Color (Verde chillón / Naranja / Rojo) */}
+        {/* Única Barra de Progreso Gorda y Contundente */}
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -86,56 +81,31 @@ export const SleepCircleProgress: React.FC<SleepCircleProgressProps> = ({
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           strokeLinecap="round"
           fill="transparent"
-          filter="url(#glow)"
-        />
-
-        {/* Inner Track */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={innerRadius}
-          stroke="rgba(255, 255, 255, 0.08)"
-          strokeWidth={4}
-          fill="transparent"
-        />
-
-        {/* Inner Ring - Subtle White Weekly Progress */}
-        <motion.circle
-          cx={size / 2}
-          cy={size / 2}
-          r={innerRadius}
-          stroke="rgba(255, 255, 255, 0.6)"
-          strokeWidth={4}
-          strokeDasharray={innerCircumference}
-          initial={{ strokeDashoffset: innerCircumference }}
-          animate={{ strokeDashoffset: innerStrokeDashoffset }}
-          transition={{ duration: 1.8, ease: "easeOut", delay: 0.2 }}
-          strokeLinecap="round"
-          fill="transparent"
+          filter="url(#progressGlow)"
         />
       </svg>
 
-      {/* Center - Disruptive Typography & Highlight Accent */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-        <div className="flex items-center gap-1.5">
-          <span className="font-disruptive text-6xl font-black text-white tracking-tight group-hover:scale-105 transition-transform">
+      {/* Interior: Puntuación con amplio respiro tipográfico */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-2">
+        <div className="flex items-center justify-center gap-1">
+          <span className="font-disruptive text-5xl font-black text-white tracking-tight leading-none">
             {score}
           </span>
           <span
-            className="w-2.5 h-2.5 rounded-full shadow-[0_0_8px_currentColor]"
+            className="w-2.5 h-2.5 rounded-full shadow-[0_0_8px_currentColor] shrink-0"
             style={{ backgroundColor: highlightColor, color: highlightColor }}
           />
         </div>
 
-        <span className="text-sm font-semibold text-white/90 font-mono mt-0.5">
+        <span className="text-xs font-semibold text-white/90 font-mono mt-1">
           {hoursInt}h {minutes}m
         </span>
 
-        <span className="text-xs text-white/50 font-mono mt-0.5">
-          {weeklyProgress}% semana
+        <span className="text-[10px] text-white/50 font-mono uppercase tracking-wider mt-0.5">
+          {Math.round((hours / targetHours) * 100)}% meta 8h
         </span>
       </div>
     </div>
