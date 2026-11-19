@@ -260,3 +260,28 @@ Para la sincronización con los diferentes dispositivos de seguimiento de salud:
    - URL: `https://ewozvgylaeuagsafkipg.supabase.co`
    - Claves inyectadas en `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`).
    - Esquema DDL en `sql/00_sle8p_schema.sql` con idempotencia total (`DROP POLICY IF EXISTS`, `DROP TRIGGER IF EXISTS`).
+
+
+---
+
+## 16. Integración Oficial `@supabase/ssr` (Next.js App Router & Middleware)
+
+1. **Dependencias Instaladas:**
+   - `@supabase/supabase-js` (^2.119.2)
+   - `@supabase/ssr` (^0.5.2)
+
+2. **Variables de Entorno Configuradas (`.env.local` y `.env.example`):**
+   - `NEXT_PUBLIC_SUPABASE_URL=https://ewozvgylaeuagsafkipg.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_qnoyCaL_UjrvljXisSHO5A_l6-Yc4Vu`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_qnoyCaL_UjrvljXisSHO5A_l6-Yc4Vu` (compatibilidad fallback)
+   - `SUPABASE_SERVICE_ROLE_KEY=[CONFIGURED_IN_ENV_LOCAL]` (operaciones de servidor con bypass RLS)
+
+3. **Arquitectura de Helpers Creada:**
+   - `utils/supabase/client.ts`: Generador del cliente navegador (`createBrowserClient`) utilizando la Publishable Key.
+   - `utils/supabase/server.ts`: Generador asíncrono para Server Components y Route Handlers (`createServerClient`) con manejo dinámico de `cookies()`.
+   - `utils/supabase/middleware.ts`: Función `updateSession(request: NextRequest)` que refresca sesiones de usuario activas y persiste cookies en respuestas HTTP.
+   - `middleware.ts`: Middleware raíz de Next.js enlazado a `updateSession`, filtrando estáticos y assets de imagen.
+
+4. **Compatibilidad y Sincronización:**
+   - `lib/supabase.ts`: Conectado directamente a `utils/supabase/client.ts` para sincronización de perfiles y telemetría de wearables.
+   - Repositorio GitHub sincronizado en `https://github.com/ETHAN2K23/sle8p.git` listo para Vercel.
