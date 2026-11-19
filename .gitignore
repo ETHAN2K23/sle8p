@@ -1,0 +1,33 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js build output
+/.next/
+/out/
+/build
+
+# Testing & Coverage
+/coverage
+
+# Environment variables
+.env*.local
+.env.local
+
+# Misc & OS
+.DS_Store
+Thumbs.db
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+
+# Temporary agent screenshots
+/public/screenshots/
+
+# Capacitor / iOS / Android build artifacts
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
+android/.gradle
+android/build
