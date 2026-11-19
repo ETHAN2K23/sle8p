@@ -225,3 +225,22 @@ Para la sincronización con los diferentes dispositivos de seguimiento de salud:
 
 4. **Sle8p IA con Identidad Real (`/coach`):**
    - El asistente conversacional habla en primera persona como el propio guardián Sle8p, combinando neurociencia del sueño (adenosina, ciclos REM de 90m) con un tono de mejor amigo empático y cero corporativo.
+
+
+---
+
+## 14. Repositorio Git y Configuración de Base de Datos Supabase
+
+1. **Repositorio Git Local y Remoto:**
+   - Repositorio inicializado en rama principal `main` con `.gitignore` exhaustivo (excluye `node_modules`, `.next`, `.env*.local`, builds de iOS/Android).
+   - Commits iniciales realizados bajo la identidad `ETHAN2K23`.
+   - Remoto añadido: `origin https://github.com/ETHAN2K23/sle8p.git`.
+
+2. **Despliegue de Supabase:**
+   - Esquema DDL en `sql/00_sle8p_schema.sql`:
+     - `profiles`: Datos de usuario, meta de horas, hora de despertar y cálculo ideal de acostarse.
+     - `sleep_sessions`: Histórico de sueño diario, fases REM, latencia y eficiencia.
+     - `wearable_connections`: Telemetría en vivo (ppm, VFC, fase y batería).
+   - Variables de entorno preparadas en `.env.local` y `.env.example`:
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
