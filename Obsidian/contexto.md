@@ -244,3 +244,19 @@ Para la sincronización con los diferentes dispositivos de seguimiento de salud:
    - Variables de entorno preparadas en `.env.local` y `.env.example`:
      - `NEXT_PUBLIC_SUPABASE_URL`
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+
+---
+
+## 15. Vinculación Activa: GitHub Oficial y Proyecto Supabase
+
+1. **Repositorio GitHub Creado y Desplegado:**
+   - URL: `https://github.com/ETHAN2K23/sle8p`
+   - Estado: Rama `main` sincronizada con el 100% del código fuente, assets y schema.
+   - Acceso Vercel: Habilitado para importación directa en Vercel Dashboard sin restricciones.
+
+2. **Conexión Supabase en Producción:**
+   - Project ID: `ewozvgylaeuagsafkipg`
+   - URL: `https://ewozvgylaeuagsafkipg.supabase.co`
+   - Claves inyectadas en `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`).
+   - Esquema DDL en `sql/00_sle8p_schema.sql` con idempotencia total (`DROP POLICY IF EXISTS`, `DROP TRIGGER IF EXISTS`).
