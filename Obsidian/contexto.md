@@ -322,3 +322,23 @@ Para la sincronización con los diferentes dispositivos de seguimiento de salud:
      - *Sueño normal (7-8h)*: Termorregulación a 18-19°C para potenciar la segunda mitad de la noche.
      - *Buen sueño (&ge; 8h)*: Exposición a 15m de luz solar matutina para fijar el pulso de cortisol.
    - **Estimación REM Sin Dispositivos:** Estimador de ciclos ultradianos (90m por ciclo, 22% REM total) basado en las medias biológicas contrastadas en internet cuando el usuario no dispone de smartwatch.
+
+
+---
+
+## 18. Erradicación de AI Slop & Copywriting Fisiológico Riguroso
+
+1. **Supresión Absoluta de Copywriting Basura & Emojis:**
+   - Erradicados todos los emojis decorativos (`☕`, `🛌`, `👀`, `🧠`, `💡`, `♥`, `⚡`, `z Z Z`).
+   - Eliminados todos los clichés y modismos de IA ("8 horas o barbarie", "a la cueva", "modo bestia", "como un lirón", "tus fases REM valen oro", "cero agobios").
+
+2. **Adopción de Tono Clínico y Médico Riguroso:**
+   - Dashboard: "Hora prevista de descanso", "Meta 8.0h", "Latencia en rango fisiológico", "Arquitectura REM completa", "Consolidación alta".
+   - Mascota Sle8p: Información fisiológica sobria sobre ciclos ultradianos de 90 minutos, sincronización circadiana y ventanas de melatonina.
+   - Sle8p IA (`/coach`): Respuestas sobre semivida de cafeína (5-7h), saturación de receptores de adenosina en prosencéfalo basal y microdespertares normales.
+   - Tracker (`/tracker`): "Protocolo de Intervención Circadiana", "Termorregulación y Densidad REM", "Sincronización del Núcleo Supraquiasmático".
+   - Wearables (`/wearables`): Monogramas tipográficos limpios `HK` (HealthKit) y `SC` (Siri Shortcuts).
+
+3. **Despliegue Vercel & Repositorio GitHub:**
+   - `vercel.json` añadido en la raíz con configuración estándar de Next.js.
+   - Commits verificados en GitHub `origin/main` (`bf6f3bd`, `faefe91`).
